@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(cookieparser());
 
 app.get('/', (req,res) => {
-    
+    res.send(req.cookies);
 });
 
 // POST route to create a user
@@ -25,7 +25,9 @@ app.post('/create', (req, res) => {
                 username:username, 
                 password:hash
             });
-            res.status(201).send(createdUser);
+            let token = jwt.sign({email}, 'shkey');
+            res.cookie("token",token);
+            res.status(200).send(createdUser)
             })  
         })
         
